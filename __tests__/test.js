@@ -2,6 +2,17 @@ const app = require("../server/app");
 const expect = require("chai").expect;
 const request = require("supertest");
 
+describe("app", () => {
+  it("Status: 404. Responds with an error message when the path does not exist", () => {
+    return request(app)
+      .get("/api/not-a-path")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).to.deep.equal("Path not found.");
+      });
+  });
+});
+
 describe("/api/listings", () => {
   describe("GET", () => {
     it("Status: 200, Responds with an array of listing objects", () => {
@@ -55,6 +66,46 @@ describe("/api/listings", () => {
             expect(listingObj.reviews).to.be.an("array");
             expect(listingObj.images).to.be.an("array");
           });
+        });
+    });
+  });
+  describe("PATCH", () => {
+    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+      return request(app)
+        .patch("/api/listings")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Method not allowed.");
+        });
+    });
+  });
+  describe("PUT", () => {
+    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+      return request(app)
+        .put("/api/listings")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Method not allowed.");
+        });
+    });
+  });
+  describe("POST", () => {
+    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+      return request(app)
+        .post("/api/listings")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Method not allowed.");
+        });
+    });
+  });
+  describe("DELETE", () => {
+    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+      return request(app)
+        .delete("/api/listings")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Method not allowed.");
         });
     });
   });

@@ -4,6 +4,7 @@ app.use(express.json());
 const apiRouter = require("./routers/apiRouter");
 const mongoose = require("mongoose");
 
+//CONNECTION
 const ENV = process.env.NODE_ENV || "development";
 
 require("dotenv").config({
@@ -14,7 +15,6 @@ if (!ENV) {
   throw new Error("URI not set");
 }
 
-console.log(process.env.URI);
 mongoose
   .connect(process.env.URI)
   .then((res) => {
@@ -22,6 +22,12 @@ mongoose
   })
   .catch((err) => console.log(err));
 
+//ROUTERS
 app.use("/api", apiRouter);
+
+//ERROR HANDLING
+app.all("/*", (req, res) => {
+  res.status(404).send({ msg: "Path not found." });
+});
 
 module.exports = app;
