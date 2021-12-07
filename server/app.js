@@ -2,8 +2,10 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 const apiRouter = require("./routers/apiRouter");
-const mongoose = require("mongoose");
+const { handleCustomErrors } = require("./controllers/ErrorController");
 
+//CONNECTION
+const mongoose = require("mongoose");
 const ENV = process.env.NODE_ENV || "development";
 
 require("dotenv").config({
@@ -14,7 +16,6 @@ if (!ENV) {
   throw new Error("URI not set");
 }
 
-console.log(process.env.URI);
 mongoose
   .connect(process.env.URI)
   .then((res) => {
@@ -22,6 +23,14 @@ mongoose
   })
   .catch((err) => console.log(err));
 
+//ROUTERS
 app.use("/api", apiRouter);
+
+//ERROR HANDLING
+app.all("/*", (req, res) => {
+  res.status(404).send({ msg: "Path not found." });
+});
+
+app.use(handleCustomErrors);
 
 module.exports = app;
