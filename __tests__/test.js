@@ -164,5 +164,61 @@ describe("/api/listings/:listing_id", () => {
           expect(listing.images).to.be.an("array");
         });
     });
+    it("Status: 404. Responds with an error message when the path is logical (hexidecimal) but does not exist", () => {
+      return request(app)
+        .get("/api/listings/61adfad4bacbe7ff1dfb7f2b")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Listing not found.");
+        });
+    });
+    it("Status: 400. Responds with an error message when the path is illogical (not hexidecimal)", () => {
+      return request(app)
+        .get("/api/listings/not-a-hexidecimal")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Invalid data entry.");
+        });
+    });
+  });
+  describe("PATCH", () => {
+    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+      return request(app)
+        .patch("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Method not allowed.");
+        });
+    });
+  });
+  describe("PUT", () => {
+    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+      return request(app)
+        .put("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Method not allowed.");
+        });
+    });
+  });
+  describe("POST", () => {
+    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+      return request(app)
+        .post("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Method not allowed.");
+        });
+    });
+  });
+  describe("DELETE", () => {
+    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+      return request(app)
+        .delete("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Method not allowed.");
+        });
+    });
   });
 });
