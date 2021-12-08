@@ -111,6 +111,49 @@ describe("/api/listings", () => {
             );
           });
       });
+      it("Status: 201. Responds with a listing object with the relevant properties", () => {
+        const newListing = {
+          amenities: {
+            "24HourAccess": true,
+            WC: false,
+            accessible: false,
+            indoor: false,
+            kitchen: false,
+            outdoor: true,
+            parking: false,
+            power: false,
+          },
+          description:
+            "A palace made of floating lemons that smells oddly like cucumber ",
+          location: {
+            city: "Manchester",
+            postcode: "M2 5Kp",
+          },
+          price: 50,
+          size: "S",
+          title: "Floating-Lemon",
+          contactDetails: {
+            phoneNumber: "078954356548",
+            emailAddress: "Scarlett@gmail.com",
+          },
+          owner: "Scarlett Adams",
+          images: [],
+        };
+        return request(app)
+          .post("/api/listings")
+          .send(newListing)
+          .expect(201)
+          .then(({ body }) => {
+            const listing = body;
+            expect(listing).to.be.an("object");
+            expect(Object.keys(listing)).to.have.lengthOf(12);
+            expect(listing.title).to.deep.equal("Floating-Lemon");
+            expect(listing.location.city).to.deep.equal("Manchester");
+            expect(listing.contactDetails.emailAddress).to.deep.equal(
+              "Scarlett@gmail.com"
+            );
+          });
+      });
     });
     describe("PATCH - INVALID REQUEST", () => {
       it("Status: 405. Responds with an error message when the path is not allowed", () => {
