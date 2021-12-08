@@ -16,6 +16,15 @@ if (!ENV) {
   throw new Error("URI not set");
 }
 
+const config =
+  ENV === "production"
+    ? {
+        connectionString: process.env.MONGODB_URI,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }
+    : {};
 mongoose
   .connect(process.env.URI)
   .then((res) => {
