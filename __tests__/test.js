@@ -1,6 +1,16 @@
 const app = require("../server/app");
 const expect = require("chai").expect;
 const request = require("supertest");
+const mongoose = require("mongoose");
+const { seedTestDb } = require("../test-db/test-data");
+
+beforeEach((done) => {
+  mongoose.connection.collections.listings.drop(() => {
+    seedTestDb();
+    done();
+  });
+});
+// afterAll(() => db.end());
 
 describe("app", () => {
   it("Status: 404. Responds with an error message when the path does not exist", () => {
@@ -92,7 +102,6 @@ describe("/api/listings", () => {
           .send(newListing)
           .expect(201)
           .then(({ body }) => {
-            console.log(Object.keys(body));
             const listing = body;
             expect(listing).to.be.an("object");
             expect(Object.keys(listing)).to.have.lengthOf(12);
@@ -201,7 +210,7 @@ describe("/api/listings/:listing_id", () => {
     });
   });
   describe("PATCH", () => {
-    it.only("Status: 200. Responds with a listing object with the set property updated when the change is permitted", () => {
+    it("Status: 200. Responds with a listing object with the set property updated when the change is permitted", () => {
       const update = { price: 400, owner: "Bob Marley" };
       return request(app)
         .patch("/api/listings/61adfad4bacbe7ff1dfb7f2a")
@@ -213,16 +222,13 @@ describe("/api/listings/:listing_id", () => {
         });
     });
   });
-  describe("PUT", () => {
-    it("Status: 405. Responds with an error message when the path is not allowed", () => {
-      return request(app)
-        .put("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-        .expect(405)
-        .then(({ body }) => {
-          expect(body.msg).to.deep.equal("Method not allowed.");
-        });
-    });
-  });
+  // describe("DELETE", () => {
+  //   it("Status: 204. Deletes the relevant listing and does not send any content back", () => {
+  //     return request(app)
+  //       .delete("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+  //       .expect(204);
+  //   });
+  // });
   describe("POST", () => {
     it("Status: 405. Responds with an error message when the path is not allowed", () => {
       return request(app)
@@ -233,10 +239,10 @@ describe("/api/listings/:listing_id", () => {
         });
     });
   });
-  describe("DELETE", () => {
+  describe("PUT", () => {
     it("Status: 405. Responds with an error message when the path is not allowed", () => {
       return request(app)
-        .delete("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+        .put("/api/listings/61adfad4bacbe7ff1dfb7f2a")
         .expect(405)
         .then(({ body }) => {
           expect(body.msg).to.deep.equal("Method not allowed.");

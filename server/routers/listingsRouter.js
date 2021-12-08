@@ -4,6 +4,7 @@ const {
   getListingById,
   postListing,
   patchListingById,
+  deleteListingById,
 } = require("../controllers/ListingsController");
 const {
   handlesMethodNotAllowedError,
@@ -13,6 +14,7 @@ listingsRouter
   .route("/:listing_id")
   .get(getListingById)
   .patch(patchListingById)
+  // .delete(deleteListingById)
   .all(handlesMethodNotAllowedError);
 listingsRouter
   .route("/")

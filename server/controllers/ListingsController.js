@@ -13,11 +13,11 @@ exports.getListingById = (req, res, next) => {
   if (!hex.test(req.params.listing_id)) {
     res.status(400).send({ msg: "Invalid data entry." });
   }
-  ListingModel.find({ _id: req.params.listing_id })
+  const id = req.params.listing_id;
+  ListingModel.findById(id)
     .then((listing) => {
-      if (listing.length < 1)
-        res.status(404).send({ msg: "Listing not found." });
-      res.status(200).send(listing[0]);
+      if (listing === null) res.status(404).send({ msg: "Listing not found." });
+      res.status(200).send(listing);
     })
     .catch(next);
 };
@@ -52,7 +52,7 @@ exports.postListing = (req, res, next) => {
       parking: req.body.amenities.parking,
       indoor: req.body.amenities.indoor,
       outdoor: req.body.amenities.outdoor,
-      WC: req.body.amenities.wc,
+      WC: req.body.amenities.WC,
       kitchen: req.body.amenities.kitchen,
       "24HourAccess": req.body.amenities["24HourAccess"],
     },
@@ -77,11 +77,23 @@ exports.patchListingById = (req, res, next) => {
   if (!hex.test(req.params.listing_id)) {
     res.status(400).send({ msg: "Invalid data entry." });
   }
-  console.log(req.body, "<<<req.body");
-  const id = { _id: req.params.listing_id };
-  ListingModel.findOneAndUpdate(id, req.body, { new: true })
+  const id = req.params.listing_id;
+  ListingModel.findByIdAndUpdate(id, req.body, { new: true })
     .then((updatedListing) => {
       res.status(200).send(updatedListing);
     })
     .catch(next);
 };
+
+// exports.deleteListingById = (req, res, next) => {
+//   const hex = /[0-9A-Fa-f]{6}/g;
+//   if (!hex.test(req.params.listing_id)) {
+//     res.status(400).send({ msg: "Invalid data entry." });
+//   }
+//   const id = { _id: req.params.listing_id };
+//   ListingModel.findByIdAndDelete(id)
+//     .then(() => {
+//       res.status(204);
+//     })
+//     .catch(next);
+// };
