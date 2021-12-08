@@ -6,11 +6,10 @@ const { seedTestDb } = require("../test-db/test-data");
 
 beforeEach((done) => {
   mongoose.connection.collections.listings.drop(() => {
-    seedTestDb();
     done();
+    seedTestDb();
   });
 });
-// afterAll(() => db.end());
 
 describe("app", () => {
   it("Status: 404. Responds with an error message when the path does not exist", () => {
@@ -222,13 +221,13 @@ describe("/api/listings/:listing_id", () => {
         });
     });
   });
-  // describe("DELETE", () => {
-  //   it("Status: 204. Deletes the relevant listing and does not send any content back", () => {
-  //     return request(app)
-  //       .delete("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-  //       .expect(204);
-  //   });
-  // });
+  describe("DELETE", () => {
+    it("Status: 204. Deletes the relevant listing and does not send any content back", () => {
+      return request(app)
+        .delete("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+        .expect(204);
+    });
+  });
   describe("POST", () => {
     it("Status: 405. Responds with an error message when the path is not allowed", () => {
       return request(app)

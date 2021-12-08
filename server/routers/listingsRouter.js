@@ -14,7 +14,7 @@ listingsRouter
   .route("/:listing_id")
   .get(getListingById)
   .patch(patchListingById)
-  // .delete(deleteListingById)
+  .delete(deleteListingById)
   .all(handlesMethodNotAllowedError);
 listingsRouter
   .route("/")

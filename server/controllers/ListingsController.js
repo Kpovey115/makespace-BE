@@ -85,15 +85,15 @@ exports.patchListingById = (req, res, next) => {
     .catch(next);
 };
 
-// exports.deleteListingById = (req, res, next) => {
-//   const hex = /[0-9A-Fa-f]{6}/g;
-//   if (!hex.test(req.params.listing_id)) {
-//     res.status(400).send({ msg: "Invalid data entry." });
-//   }
-//   const id = { _id: req.params.listing_id };
-//   ListingModel.findByIdAndDelete(id)
-//     .then(() => {
-//       res.status(204);
-//     })
-//     .catch(next);
-// };
+exports.deleteListingById = (req, res, next) => {
+  const hex = /[0-9A-Fa-f]{6}/g;
+  if (!hex.test(req.params.listing_id)) {
+    res.status(400).send({ msg: "Invalid data entry." });
+  }
+  const id = { _id: req.params.listing_id };
+  ListingModel.findByIdAndDelete(id)
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(next);
+};
