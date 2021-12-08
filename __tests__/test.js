@@ -201,12 +201,15 @@ describe("/api/listings/:listing_id", () => {
     });
   });
   describe("PATCH", () => {
-    it("Status: 405. Responds with an error message when the path is not allowed", () => {
+    it.only("Status: 200. Responds with a listing object with the set property updated when the change is permitted", () => {
+      const update = { price: 400, owner: "Bob Marley" };
       return request(app)
         .patch("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-        .expect(405)
+        .send(update)
+        .expect(200)
         .then(({ body }) => {
-          expect(body.msg).to.deep.equal("Method not allowed.");
+          const listing = body;
+          expect(listing.price).to.deep.equal(400);
         });
     });
   });

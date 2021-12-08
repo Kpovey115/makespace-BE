@@ -3,6 +3,7 @@ const {
   getListings,
   getListingById,
   postListing,
+  patchListingById,
 } = require("../controllers/ListingsController");
 const {
   handlesMethodNotAllowedError,
@@ -11,6 +12,7 @@ const {
 listingsRouter
   .route("/:listing_id")
   .get(getListingById)
+  .patch(patchListingById)
   .all(handlesMethodNotAllowedError);
 listingsRouter
   .route("/")
