@@ -6,8 +6,8 @@ const { seedTestDb } = require("../test-db/test-data");
 
 beforeEach((done) => {
   mongoose.connection.collections.listings.drop(() => {
-    done();
     seedTestDb();
+    done();
   });
 });
 
@@ -23,7 +23,7 @@ describe("app", () => {
 });
 
 describe("/api/listings", () => {
-  describe("GET", () => {
+  describe("GET ALL LISTINGS", () => {
     it("Status: 200, Responds with an array of listing objects", () => {
       return request(app)
         .get("/api/listings")
@@ -71,7 +71,7 @@ describe("/api/listings", () => {
           });
         });
     });
-    describe("POST", () => {
+    describe("POST A LISTING", () => {
       it("Status: 201. Responds with a listing object with the relevant properties", () => {
         const newListing = {
           title: "Little space",
@@ -112,7 +112,7 @@ describe("/api/listings", () => {
           });
       });
     });
-    describe("PATCH", () => {
+    describe("PATCH - INVALID REQUEST", () => {
       it("Status: 405. Responds with an error message when the path is not allowed", () => {
         return request(app)
           .patch("/api/listings")
@@ -122,7 +122,7 @@ describe("/api/listings", () => {
           });
       });
     });
-    describe("PUT", () => {
+    describe("PUT - INVALID REQUEST", () => {
       it("Status: 405. Responds with an error message when the path is not allowed", () => {
         return request(app)
           .put("/api/listings")
@@ -132,7 +132,7 @@ describe("/api/listings", () => {
           });
       });
     });
-    describe("DELETE", () => {
+    describe("DELETE - INVALID REQUEST", () => {
       it("Status: 405. Responds with an error message when the path is not allowed", () => {
         return request(app)
           .delete("/api/listings")
@@ -146,7 +146,7 @@ describe("/api/listings", () => {
 });
 
 describe("/api/listings/:listing_id", () => {
-  describe("GET", () => {
+  describe("GET LISTING BY ID", () => {
     it("Status: 200. Responds with a listing object with the relevant properties", () => {
       return request(app)
         .get("/api/listings/61adfad4bacbe7ff1dfb7f2a")
@@ -208,7 +208,7 @@ describe("/api/listings/:listing_id", () => {
         });
     });
   });
-  describe("PATCH", () => {
+  describe("PATCH LISTING BY ID", () => {
     it("Status: 200. Responds with a listing object with the set property updated when the change is permitted", () => {
       const update = { price: 400, owner: "Bob Marley" };
       return request(app)
@@ -220,25 +220,61 @@ describe("/api/listings/:listing_id", () => {
           expect(listing.price).to.deep.equal(400);
         });
     });
-  });
-  describe("DELETE", () => {
-    it("Status: 204. Deletes the relevant listing and does not send any content back", () => {
+    it("Status: 404. Responds with an error message when the path is logical (hexidecimal) but does not exist", () => {
+      const update = { price: 400, owner: "Bob Marley" };
       return request(app)
-        .delete("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-        .expect(204);
-    });
-  });
-  describe("POST", () => {
-    it("Status: 405. Responds with an error message when the path is not allowed", () => {
-      return request(app)
-        .post("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-        .expect(405)
+        .patch("/api/listings/61adfad4bacbe7ff1dfb7f2b")
+        .send(update)
+        .expect(404)
         .then(({ body }) => {
-          expect(body.msg).to.deep.equal("Method not allowed.");
+          expect(body.msg).to.deep.equal("Listing not found.");
+        });
+    });
+    it("Status: 400. Responds with an error message when the path is illogical (not hexidecimal)", () => {
+      const update = { price: 400, owner: "Bob Marley" };
+      return request(app)
+        .patch("/api/listings/not-a-hexidecimal")
+        .send(update)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.deep.equal("Invalid data entry.");
         });
     });
   });
-  describe("PUT", () => {
+});
+describe("DELETES LISTING BY ID", () => {
+  it("Status: 204. Deletes the relevant listing and does not send any content back", () => {
+    return request(app)
+      .delete("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+      .expect(204);
+  });
+  it("Status: 404. Responds with an error message when the path is logical (hexidecimal) but does not exist", () => {
+    return request(app)
+      .delete("/api/listings/61adfad4bacbe7ff1dfb7f2b")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).to.deep.equal("Listing not found.");
+      });
+  });
+  it("Status: 400. Responds with an error message when the path is illogical (not hexidecimal)", () => {
+    return request(app)
+      .delete("/api/listings/not-a-hexidecimal")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).to.deep.equal("Invalid data entry.");
+      });
+  });
+});
+describe("POST - INVALID REQUEST", () => {
+  it("Status: 405. Responds with an error message when the path is not allowed", () => {
+    return request(app)
+      .post("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+      .expect(405)
+      .then(({ body }) => {
+        expect(body.msg).to.deep.equal("Method not allowed.");
+      });
+  });
+  describe("PUT - INVALID REQUEST", () => {
     it("Status: 405. Responds with an error message when the path is not allowed", () => {
       return request(app)
         .put("/api/listings/61adfad4bacbe7ff1dfb7f2a")

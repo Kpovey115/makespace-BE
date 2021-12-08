@@ -17,7 +17,7 @@ exports.getListingById = (req, res, next) => {
   ListingModel.findById(id)
     .then((listing) => {
       if (listing === null) res.status(404).send({ msg: "Listing not found." });
-      res.status(200).send(listing);
+      else res.status(200).send(listing);
     })
     .catch(next);
 };
@@ -80,7 +80,9 @@ exports.patchListingById = (req, res, next) => {
   const id = req.params.listing_id;
   ListingModel.findByIdAndUpdate(id, req.body, { new: true })
     .then((updatedListing) => {
-      res.status(200).send(updatedListing);
+      if (updatedListing === null)
+        res.status(404).send({ msg: "Listing not found." });
+      else res.status(200).send(updatedListing);
     })
     .catch(next);
 };
@@ -92,8 +94,10 @@ exports.deleteListingById = (req, res, next) => {
   }
   const id = { _id: req.params.listing_id };
   ListingModel.findByIdAndDelete(id)
-    .then(() => {
-      res.status(204).send();
+    .then((deletedListing) => {
+      if (deletedListing === null)
+        res.status(404).send({ msg: "Listing not found." });
+      else res.status(204).send();
     })
     .catch(next);
 };
