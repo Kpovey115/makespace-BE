@@ -17,7 +17,7 @@ if (!ENV) {
 }
 
 mongoose
-  .connect(process.env.URI)
+  .connect(process.env.MONGODB_URI)
   .then((res) => {
     console.log(`Connection successful ${res}`);
   })
