@@ -27,7 +27,7 @@ const ReviewsSchema = new Schema(
 
 const ContactDetailsSchema = new Schema(
   {
-    phoneNumber: Number,
+    phoneNumber: String,
     emailAddress: String,
   },
   { _id: false }
