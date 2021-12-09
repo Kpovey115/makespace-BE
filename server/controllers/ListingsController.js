@@ -67,7 +67,7 @@ exports.postListing = (req, res, next) => {
   listing
     .save()
     .then((newListing) => {
-      res.json({ success: true, result: newListing });
+      res.json(newListing);
     })
     .catch((err) => {
       res.json({ success: false, result: err });
