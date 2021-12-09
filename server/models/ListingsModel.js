@@ -55,7 +55,14 @@ const ListingSchema = new Schema(
     contactDetails: ContactDetailsSchema,
     images: Array,
   },
-  { versionKey: false }
+  {
+    versionKey: false,
+    writeConcern: {
+      w: "majority",
+      j: true,
+      wtimeout: 1000,
+    },
+  }
 );
 
 module.exports = mongoose.model("listing", ListingSchema);
