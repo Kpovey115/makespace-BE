@@ -8,8 +8,10 @@ const { seedTestDb } = require("../test-db/test-data");
 
 before((done) => {
     mongoose.connection.collections.listings.drop(() => {
-        seedTestDb();
-        done();
+        mongoose.connection.collections.users.drop(() => {
+            seedTestDb();
+            done();
+        });
     });
 });
 
@@ -440,89 +442,86 @@ describe("POST - INVALID REQUEST", () => {
     });
 });
 
-// describe("/api/listings/:location", () => {
-//   describe("GET", () => {
-//     it("Status: 200. Responds with an array of listing objects that match the input location with the relevant properties", () => {
-//       return request(app)
-//         .get("/api/listings/Manchester")
-//         .expect(200)
-//         .then(({ body }) => {
-//           let { listings } = body;
-//           expect(listings).to.be.an("array");
-//           expect(listings).to.have.lengthOf(4);
-//           listing.forEach((listingObj) => {
-//             expect(Object.keys(listingObj)).to.have.lengthOf(12);
-//           });
-//         });
-//     });
-//     it("Status: 200. Responds with an array of listing objects that match the input location with the relevant properties", () => {
-//       return request(app)
-//         .get("/api/listings/Warrington")
-//         .expect(200)
-//         .then(({ body }) => {
-//           let { listings } = body;
-//           expect(listings).to.be.an("array");
-//           expect(listings).to.have.lengthOf(1);
-//           listing.forEach((listingObj) => {
-//             expect(Object.keys(listingObj)).to.have.lengthOf(12);
-//           });
-//         });
-//     });
-//     it("Status: 404. Responds with an error message when the path is logical (hexidecimal) but does not exist", () => {
-//       return request(app)
-//         .get("/api/listings/61adfad4bacbe7ff1dfb7f2b")
-//         .expect(404)
-//         .then(({ body }) => {
-//           expect(body.msg).to.deep.equal("Listing not found.");
-//         });
-//     });
-//     it("Status: 400. Responds with an error message when the path is illogical (not hexidecimal)", () => {
-//       return request(app)
-//         .get("/api/listings/not-a-hexidecimal")
-//         .expect(400)
-//         .then(({ body }) => {
-//           expect(body.msg).to.deep.equal("Invalid data entry.");
-//         });
-//     });
-//   });
-//   describe("PATCH", () => {
-//     it("Status: 405. Responds with an error message when the path is not allowed", () => {
-//       return request(app)
-//         .patch("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-//         .expect(405)
-//         .then(({ body }) => {
-//           expect(body.msg).to.deep.equal("Method not allowed.");
-//         });
-//     });
-//   });
-//   describe("PUT", () => {
-//     it("Status: 405. Responds with an error message when the path is not allowed", () => {
-//       return request(app)
-//         .put("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-//         .expect(405)
-//         .then(({ body }) => {
-//           expect(body.msg).to.deep.equal("Method not allowed.");
-//         });
-//     });
-//   });
-//   describe("POST", () => {
-//     it("Status: 405. Responds with an error message when the path is not allowed", () => {
-//       return request(app)
-//         .post("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-//         .expect(405)
-//         .then(({ body }) => {
-//           expect(body.msg).to.deep.equal("Method not allowed.");
-//         });
-//     });
-//   });
-//   describe("DELETE", () => {
-//     it("Status: 405. Responds with an error message when the path is not allowed", () => {
-//       return request(app)
-//         .delete("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-//         .expect(405)
-//         .then(({ body }) => {
-//           expect(body.msg).to.deep.equal("Method not allowed.");
-//         });
-//     });
-//   });
-// });
+describe("/api/users", () => {
+    describe("POST - new user", () => {
+        it("Status: 201. Responds with a new user object", () => {
+            const newUser = {
+                username: "Bill123",
+                displayName: "Bill Rogers",
+                emailAddress: "Bill.Rogers@email.com",
+                _id: "3teett43tey66d",
+                avatar: "imagehere",
+            };
+            return request(app)
+                .post("/api/users")
+                .send(newUser)
+                .expect(201)
+                .then(({ body }) => {
+                    const user = body;
+                    expect(user).to.be.an("object");
+                    expect(Object.keys(user)).to.have.lengthOf(6);
+                    expect(user.username).to.deep.equal("Bill123");
+                    expect(user.emailAddress).to.deep.equal(
+                        "Bill.Rogers@email.com"
+                    );
+                });
+        });
+    });
+
+    describe("GET - INVALID REQUEST", () => {
+        it("Status: 405. Responds with an error message when the path is not allowed", () => {
+            return request(app)
+                .get("/api/users")
+                .expect(405)
+                .then(({ body }) => {
+                    expect(body.msg).to.deep.equal("Method not allowed.");
+                });
+        });
+    });
+
+    describe("PATCH - INVALID REQUEST", () => {
+        it("Status: 405. Responds with an error message when the path is not allowed", () => {
+            return request(app)
+                .patch("/api/users")
+                .expect(405)
+                .then(({ body }) => {
+                    expect(body.msg).to.deep.equal("Method not allowed.");
+                });
+        });
+    });
+    describe("PUT - INVALID REQUEST", () => {
+        it("Status: 405. Responds with an error message when the path is not allowed", () => {
+            return request(app)
+                .put("/api/users")
+                .expect(405)
+                .then(({ body }) => {
+                    expect(body.msg).to.deep.equal("Method not allowed.");
+                });
+        });
+    });
+    describe("DELETE - INVALID REQUEST", () => {
+        it("Status: 405. Responds with an error message when the path is not allowed", () => {
+            return request(app)
+                .delete("/api/users")
+                .expect(405)
+                .then(({ body }) => {
+                    expect(body.msg).to.deep.equal("Method not allowed.");
+                });
+        });
+    });
+});
+
+describe("/api/users/:user_id", () => {
+    describe("GET - user by ID", () => {
+        it("Status: 200. Responds with the user object from the id", () => {
+            return request(app)
+                .get("/api/users/61ae1c9663e6e30b007fc8f3")
+                .expect(200)
+                .then(({ body }) => {
+                    const user = body;
+                    expect(user.displayName).to.deep.equal("Martha Gray");
+                    expect(Object.keys(user)).to.have.lengthOf(6);
+                });
+        });
+    });
+});

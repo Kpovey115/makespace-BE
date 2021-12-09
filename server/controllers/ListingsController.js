@@ -30,18 +30,6 @@ exports.getListingById = (req, res, next) => {
         .catch(next);
 };
 
-// exports.getListingsByLocation = (req, res, next) => {
-//   ListingModel.find({ location: req.params.location })
-//     .then((listings) => {
-//       if (listings.length < 1)
-//         res
-//           .status(404)
-//           .send({ msg: "There are currently no listings with that location." });
-//       res.status(200).send(listings);
-//     })
-//     .catch(next);
-// };
-
 exports.postListing = (req, res, next) => {
     let listing = new ListingModel({
         title: req.body.title,
@@ -94,20 +82,6 @@ exports.patchListingById = (req, res, next) => {
         })
         .catch(next);
 };
-
-// exports.patchListingById = (req, res, next) => {
-//   const hex = /[0-9A-Fa-f]{6}/g;
-//   if (!hex.test(req.params.listing_id)) {
-//     res.status(400).send({ msg: "Invalid data entry." });
-//   }
-//   const id = req.params.listing_id;
-//   const body = req.body;
-//   ListingModel.findByIdAndUpdate(id, body, (bod) => {
-//     console.log(bod, "<-----");
-//     // if (bod === null) res.status(404).send({ msg: "Listing not found." });
-//     res.status(200).send(bod);
-//   });
-// };
 
 exports.deleteListingById = (req, res, next) => {
     const hex = /[0-9A-Fa-f]{6}/g;
