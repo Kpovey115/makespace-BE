@@ -524,4 +524,28 @@ describe("/api/users/:user_id", () => {
                 });
         });
     });
+
+    describe("PATCH - user by ID", () => {
+        it("Status: 200. Responds with the updated user object from the id", () => {
+            const update = { displayName: "Martha White" };
+            return request(app)
+                .patch("/api/users/61ae1c9663e6e30b007fc8f3")
+                .send(update)
+                .expect(200)
+                .then(({ body }) => {
+                    const user = body;
+                    expect(user.displayName).to.deep.equal("Martha White");
+                    expect(Object.keys(user)).to.have.lengthOf(6);
+                });
+        });
+    });
+
+    describe("DELETE - user by ID", () => {
+        it("Status: 200. Responds with the updated user object from the id", () => {
+            const update = { displayName: "Martha White" };
+            return request(app)
+                .delete("/api/users/61ae1c9663e6e30b007fc8f3")
+                .expect(204);
+        });
+    });
 });
