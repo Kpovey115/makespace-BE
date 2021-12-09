@@ -1,5 +1,7 @@
 const app = require("../server/app");
-const expect = require("chai").expect;
+const chai = require("chai"),
+    expect = chai.expect;
+chai.use(require("chai-sorted"));
 const request = require("supertest");
 const mongoose = require("mongoose");
 const { seedTestDb } = require("../test-db/test-data");
@@ -121,6 +123,53 @@ describe("/api/listings", () => {
                         );
                         expect(listingObj.amenities.kitchen).to.deep.equal(
                             false
+                        );
+                    });
+                });
+        });
+
+        it("Status: 200, Responds with listings sorted by descending space rating by default", () => {
+            return request(app)
+                .get("/api/listings")
+                .expect(200)
+                .then(({ body }) => {
+                    const { listings } = body;
+                    expect(listings).to.be.an("array");
+                    expect(listings).to.have.lengthOf(7);
+                    expect(listings[0].spaceRating).to.deep.equal(4.9);
+                    expect(listings[6].spaceRating).to.deep.equal(3);
+                    expect(listings).to.be.sortedBy(`spaceRating`, {
+                        descending: true,
+                    });
+                });
+        });
+        it("Status: 200, Responds with listings sorted by ascending/descending price", () => {
+            return request(app)
+                .get("/api/listings?sortby=price&order=asc")
+                .expect(200)
+                .then(({ body }) => {
+                    const { listings } = body;
+                    expect(listings).to.be.an("array");
+                    expect(listings).to.have.lengthOf(7);
+                    expect(listings).to.be.sortedBy(`price`);
+                });
+        });
+
+        it("Status: 200, Responds with listings sorted by ascending alphabetical title and filtered by city", () => {
+            return request(app)
+                .get(
+                    "/api/listings?location.city=Manchester&sortby=title&order=asc"
+                )
+                .expect(200)
+                .then(({ body }) => {
+                    const { listings } = body;
+                    expect(listings).to.be.an("array");
+                    expect(listings).to.be.sortedBy(`title`);
+                    expect(listings).to.have.lengthOf(4);
+                    listings.forEach((listingObj) => {
+                        expect(Object.keys(listingObj)).to.have.lengthOf(12);
+                        expect(listingObj.location.city).to.deep.equal(
+                            `Manchester`
                         );
                     });
                 });

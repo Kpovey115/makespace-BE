@@ -2,20 +2,17 @@ const ListingModel = require("../models/ListingsModel");
 
 exports.getListings = (req, res, next) => {
     const query = req.query;
-    console.log(query);
-    if (!query) {
-        ListingModel.find()
-            .then((listings) => {
-                res.status(200).json({ listings });
-            })
-            .catch(next);
-    } else {
-        ListingModel.find(query)
-            .then((listings) => {
-                res.status(200).json({ listings });
-            })
-            .catch(next);
-    }
+    if (!query.sortby) sortby = "spaceRating";
+    else sortby = query.sortby;
+    if (!query.order) order = "desc";
+    else order = query.order;
+
+    ListingModel.find(query)
+        .sort({ [sortby]: order })
+        .then((listings) => {
+            res.status(200).json({ listings });
+        })
+        .catch(next);
 };
 
 exports.getListingById = (req, res, next) => {
