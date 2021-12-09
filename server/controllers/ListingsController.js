@@ -67,9 +67,11 @@ exports.postListing = (req, res, next) => {
   listing
     .save()
     .then((newListing) => {
-      res.status(201).send(newListing);
+      res.json({ success: true, result: newListing });
     })
-    .catch(next);
+    .catch((err) => {
+      res.json({ success: false, result: err });
+    });
 };
 
 exports.patchListingById = (req, res, next) => {
