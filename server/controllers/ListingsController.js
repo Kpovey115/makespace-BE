@@ -64,7 +64,7 @@ exports.postListing = (req, res, next) => {
     images: req.body.images,
   });
 
-  newListing = await listing.save();
+  newListing = listing.save();
   res.json(newListing);
 };
 
