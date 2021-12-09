@@ -4,7 +4,7 @@ const request = require("supertest");
 const mongoose = require("mongoose");
 const { seedTestDb } = require("../test-db/test-data");
 
-beforeEach((done) => {
+before((done) => {
   mongoose.connection.collections.listings.drop(() => {
     seedTestDb();
     done();
@@ -195,6 +195,7 @@ describe("/api/listings/:listing_id", () => {
         .get("/api/listings/61adfad4bacbe7ff1dfb7f2a")
         .expect(200)
         .then(({ body }) => {
+          console.log(body, "<<<body");
           let listing = body;
           expect(listing).to.be.an("object");
           expect(Object.keys(listing)).to.have.lengthOf(12);
