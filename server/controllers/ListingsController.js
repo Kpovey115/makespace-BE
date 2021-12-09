@@ -3,7 +3,7 @@ const ListingModel = require("../models/ListingsModel");
 exports.getListings = (req, res, next) => {
   ListingModel.find()
     .then((listings) => {
-      res.status(200).send({ listings });
+      res.status(200).json({ listings });
     })
     .catch(next);
 };
@@ -16,8 +16,8 @@ exports.getListingById = (req, res, next) => {
   const id = req.params.listing_id;
   ListingModel.findById(id)
     .then((listing) => {
-      if (listing === null) res.status(404).send({ msg: "Listing not found." });
-      else res.status(200).send(listing);
+      if (listing === null) res.status(404).json({ msg: "Listing not found." });
+      else res.status(200).json(listing);
     })
     .catch(next);
 };
@@ -69,9 +69,7 @@ exports.postListing = (req, res, next) => {
     .then((newListing) => {
       res.status(201).json(newListing);
     })
-    .catch((err) => {
-      res.json({ success: false, result: err });
-    });
+    .catch(next);
 };
 
 exports.patchListingById = (req, res, next) => {
@@ -83,8 +81,8 @@ exports.patchListingById = (req, res, next) => {
   ListingModel.findByIdAndUpdate(id, req.body, { new: true })
     .then((updatedListing) => {
       if (updatedListing === null)
-        res.status(404).send({ msg: "Listing not found." });
-      else res.status(200).send(updatedListing);
+        res.status(404).json({ msg: "Listing not found." });
+      else res.status(200).json(updatedListing);
     })
     .catch(next);
 };
@@ -112,8 +110,8 @@ exports.deleteListingById = (req, res, next) => {
   ListingModel.findByIdAndDelete(id)
     .then((deletedListing) => {
       if (deletedListing === null)
-        res.status(404).send({ msg: "Listing not found." });
-      else res.status(204).send();
+        res.status(404).json({ msg: "Listing not found." });
+      else res.status(204).json();
     })
     .catch(next);
 };
