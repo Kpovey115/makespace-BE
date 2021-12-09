@@ -64,14 +64,8 @@ exports.postListing = (req, res, next) => {
     images: req.body.images,
   });
 
-  listing
-    .save()
-    .then((newListing) => {
-      res.json(newListing);
-    })
-    .catch((err) => {
-      res.json({ success: false, result: err });
-    });
+  newListing = await listing.save();
+  res.json(newListing);
 };
 
 exports.patchListingById = (req, res, next) => {
