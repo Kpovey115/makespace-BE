@@ -10,7 +10,7 @@ const AmenitiesSchema = new Schema(
     outdoor: Boolean,
     WC: Boolean,
     kitchen: Boolean,
-    "24HourAccess": Boolean,
+    _24HourAccess: Boolean,
   },
   { _id: false }
 );

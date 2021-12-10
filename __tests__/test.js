@@ -62,7 +62,7 @@ describe("/api/listings", () => {
               "outdoor",
               "WC",
               "kitchen",
-              "24HourAccess"
+              "_24HourAccess"
             );
             expect(listingObj.contactDetails).to.be.an("object");
             expect(listingObj.contactDetails).to.deep.nested.keys(
@@ -177,7 +177,7 @@ describe("/api/listings", () => {
             outdoor: false,
             WC: false,
             kitchen: false,
-            "24HourAccess": false,
+            _24HourAccess: false,
           },
           contactDetails: {
             phoneNumber: "07765897634",
@@ -204,7 +204,7 @@ describe("/api/listings", () => {
       it("Status: 201. Responds with a listing object with the relevant properties", () => {
         const newListing = {
           amenities: {
-            "24HourAccess": true,
+            _24HourAccess: true,
             WC: false,
             accessible: false,
             indoor: false,
@@ -313,7 +313,7 @@ describe("/api/listings/:listing_id", () => {
             "outdoor",
             "WC",
             "kitchen",
-            "24HourAccess"
+            "_24HourAccess"
           );
           expect(listing.contactDetails).to.be.an("object");
           expect(listing.contactDetails).to.deep.nested.keys(
@@ -521,6 +521,85 @@ describe("/api/users/:user_id", () => {
       return request(app)
         .delete("/api/users/61ae1c9663e6e30b007fc8f3")
         .expect(204);
+    });
+  });
+
+  describe("GET - listings by username", () => {
+    it("Status: 200. Responds with an array of all the listing objects from the given user", () => {
+      return request(app)
+        .get("/api/users/PunkRockerJack/listings")
+        .expect(200)
+        .then(({ body }) => {
+          const listings = body;
+          expect(listings).to.be.an("array");
+          expect(listings.length).to.deep.equal(1);
+          listings.forEach((listingObj) => {
+            expect(Object.keys(listingObj)).to.have.lengthOf(12);
+            expect(listingObj).to.have.all.keys(
+              "_id",
+              "title",
+              "location",
+              "owner",
+              "price",
+              "spaceRating",
+              "size",
+              "description",
+              "amenities",
+              "reviews",
+              "contactDetails",
+              "images"
+            );
+            expect(listingObj.location).to.be.an("object");
+            expect(listingObj.location).to.deep.nested.keys("city", "postcode");
+            expect(listingObj.amenities).to.be.an("object");
+            expect(listingObj.amenities).to.deep.nested.keys(
+              "power",
+              "accessible",
+              "parking",
+              "indoor",
+              "outdoor",
+              "WC",
+              "kitchen",
+              "_24HourAccess"
+            );
+            expect(listingObj.contactDetails).to.be.an("object");
+            expect(listingObj.contactDetails).to.deep.nested.keys(
+              "phoneNumber",
+              "emailAddress"
+            );
+            expect(listingObj.reviews).to.be.an("array");
+            expect(listingObj.images).to.be.an("array");
+          });
+        });
+    });
+  });
+
+  describe("GET - all users", () => {
+    it.only("Status: 200. Responds with an array of all the user objects", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body }) => {
+          const users = body;
+          expect(users.length).to.deep.equal(4);
+          users.forEach((user) => {
+            expect(Object.keys(user)).to.have.lengthOf(6);
+            expect(user).to.have.all.keys(
+              "_id",
+              "username",
+              "displayName",
+              "emailAddress",
+              "userRating",
+              "avatar"
+            );
+            expect(user.username).to.be.an("string");
+            expect(user.displayName).to.be.an("string");
+            expect(user.emailAddress).to.be.an("string");
+            expect(user.userRating).to.be.an("number");
+            expect(user.avatar).to.be.an("string");
+            expect(user.emailAddress).to.be.an("string");
+          });
+        });
     });
   });
 });

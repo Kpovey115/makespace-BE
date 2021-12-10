@@ -1,4 +1,5 @@
 const UsersModel = require("../models/UsersModel");
+const ListingModel = require("../models/ListingsModel");
 
 exports.getUserById = (req, res, next) => {
   const hex = /[0-9A-Fa-f]{6}/g;
@@ -58,6 +59,23 @@ exports.deleteUserById = (req, res, next) => {
       if (deletedUser === null)
         res.status(404).json({ msg: "User not found." });
       else res.status(204).json();
+    })
+    .catch(next);
+};
+
+exports.getListingsByUsername = (req, res, next) => {
+  const username = { owner: req.params.username };
+  ListingModel.find(username)
+    .then((listings) => {
+      res.status(200).json(listings);
+    })
+    .catch(next);
+};
+
+exports.getAllUsers = (req, res, next) => {
+  UsersModel.find()
+    .then((users) => {
+      res.status(200).json(users);
     })
     .catch(next);
 };

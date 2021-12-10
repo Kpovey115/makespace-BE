@@ -49,7 +49,7 @@ exports.postListing = (req, res, next) => {
       outdoor: req.body.amenities.outdoor,
       WC: req.body.amenities.WC,
       kitchen: req.body.amenities.kitchen,
-      "24HourAccess": req.body.amenities["24HourAccess"],
+      _24HourAccess: req.body.amenities._24HourAccess,
     },
     reviews: [],
     contactDetails: {

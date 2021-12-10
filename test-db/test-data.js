@@ -223,9 +223,8 @@ const testUsers = [
     _id: "61ae1ccb63e6e30b007fc8f4",
     username: "PunkRockerJack",
     displayName: "Jack Mortiboy",
-    email: "jacksgreatgarage@gmail.com",
+    emailAddress: "jacksgreatgarage@gmail.com",
     userRating: 4.2,
-    firebaseId: "gj43gkj53",
     avatar: "thisisanimage",
   },
 ];

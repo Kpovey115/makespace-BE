@@ -1,21 +1,28 @@
 const usersRouter = require("express").Router();
 
 const {
-    getUserById,
-    postUser,
-    patchUserById,
-    deleteUserById,
+  getAllUsers,
+  getUserById,
+  postUser,
+  patchUserById,
+  deleteUserById,
+  getListingsByUsername,
 } = require("../controllers/UsersController");
 const {
-    handlesMethodNotAllowedError,
+  handlesMethodNotAllowedError,
 } = require("../controllers/ErrorController");
 
 usersRouter
-    .route("/:user_id")
-    .get(getUserById)
-    .patch(patchUserById)
-    .delete(deleteUserById)
-    .all(handlesMethodNotAllowedError);
-usersRouter.route("/").post(postUser).all(handlesMethodNotAllowedError);
+  .route("/:user_id")
+  .get(getUserById)
+  .patch(patchUserById)
+  .delete(deleteUserById)
+  .all(handlesMethodNotAllowedError);
+usersRouter
+  .route("/")
+  .get(getAllUsers)
+  .post(postUser)
+  .all(handlesMethodNotAllowedError);
+usersRouter.route("/:username/listings").get(getListingsByUsername);
 
 module.exports = usersRouter;
