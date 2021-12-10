@@ -19,7 +19,7 @@ const testListings = [
       outdoor: true,
       WC: false,
       kitchen: false,
-      "24HourAccess": true,
+      _24HourAccess: true,
     },
     contactDetails: {
       phoneNumber: 7726819611,
@@ -46,7 +46,7 @@ const testListings = [
       outdoor: true,
       WC: true,
       kitchen: false,
-      "24HourAccess": false,
+      _24HourAccess: false,
     },
     contactDetails: {
       phoneNumber: 7853926174,
@@ -73,7 +73,7 @@ const testListings = [
       outdoor: false,
       WC: false,
       kitchen: false,
-      "24HourAccess": true,
+      _24HourAccess: true,
     },
     contactDetails: {
       phoneNumber: 7264492840,
@@ -100,7 +100,7 @@ const testListings = [
       outdoor: true,
       WC: true,
       kitchen: true,
-      "24HourAccess": false,
+      _24HourAccess: false,
     },
     contactDetails: {
       phoneNumber: 1616438967,
@@ -127,7 +127,7 @@ const testListings = [
       outdoor: false,
       WC: true,
       kitchen: false,
-      "24HourAccess": false,
+      _24HourAccess: false,
     },
     contactDetails: {
       phoneNumber: 7583372859,
@@ -154,7 +154,7 @@ const testListings = [
       outdoor: false,
       WC: true,
       kitchen: false,
-      "24HourAccess": true,
+      _24HourAccess: true,
     },
     contactDetails: {
       phoneNumber: 7583726597,
@@ -181,7 +181,7 @@ const testListings = [
       outdoor: true,
       WC: true,
       kitchen: false,
-      "24HourAccess": false,
+      _24HourAccess: false,
     },
     contactDetails: {
       phoneNumber: 7846378683,

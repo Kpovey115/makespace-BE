@@ -443,17 +443,6 @@ describe("/api/users", () => {
     });
   });
 
-  describe("GET - INVALID REQUEST", () => {
-    it("Status: 405. Responds with an error message when the path is not allowed", () => {
-      return request(app)
-        .get("/api/users")
-        .expect(405)
-        .then(({ body }) => {
-          expect(body.msg).to.deep.equal("Method not allowed.");
-        });
-    });
-  });
-
   describe("PATCH - INVALID REQUEST", () => {
     it("Status: 405. Responds with an error message when the path is not allowed", () => {
       return request(app)
@@ -575,7 +564,7 @@ describe("/api/users/:user_id", () => {
   });
 
   describe("GET - all users", () => {
-    it.only("Status: 200. Responds with an array of all the user objects", () => {
+    it("Status: 200. Responds with an array of all the user objects", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
