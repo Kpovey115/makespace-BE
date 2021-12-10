@@ -2,10 +2,6 @@ const UsersModel = require("../models/UsersModel");
 const ListingModel = require("../models/ListingsModel");
 
 exports.getUserById = (req, res, next) => {
-  const hex = /[0-9A-Fa-f]{6}/g;
-  if (!hex.test(req.params.user_id)) {
-    res.status(400).send({ msg: "Invalid data entry." });
-  }
   const id = req.params.user_id;
   UsersModel.findById(id)
     .then((user) => {
@@ -34,10 +30,6 @@ exports.postUser = (req, res, next) => {
 };
 
 exports.patchUserById = (req, res, next) => {
-  const hex = /[0-9A-Fa-f]{6}/g;
-  if (!hex.test(req.params.user_id)) {
-    res.status(400).send({ msg: "Invalid data entry." });
-  }
   const id = req.params.user_id;
   UsersModel.findByIdAndUpdate(id, req.body, { new: true })
     .then((updatedUser) => {
@@ -49,10 +41,6 @@ exports.patchUserById = (req, res, next) => {
 };
 
 exports.deleteUserById = (req, res, next) => {
-  const hex = /[0-9A-Fa-f]{6}/g;
-  if (!hex.test(req.params.user_id)) {
-    res.status(400).send({ msg: "Invalid data entry." });
-  }
   const id = { _id: req.params.user_id };
   UsersModel.findByIdAndDelete(id)
     .then((deletedUser) => {
