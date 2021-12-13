@@ -1,3 +1,4 @@
+const { Decimal128 } = require("mongodb");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -47,7 +48,7 @@ const ListingSchema = new Schema(
     location: LocationSchema,
     owner: String,
     price: Number,
-    spaceRating: Number,
+    spaceRating: Decimal128,
     size: String,
     description: String,
     amenities: AmenitiesSchema,
