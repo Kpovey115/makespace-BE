@@ -7,6 +7,7 @@ const {
   patchUserById,
   deleteUserById,
   getListingsByUsername,
+  getUserByUsername,
 } = require("../controllers/UsersController");
 const {
   handlesMethodNotAllowedError,

@@ -489,6 +489,19 @@ describe("/api/users/:user_id", () => {
     });
   });
 
+  describe("GET - user by username", () => {
+    it("Status: 200. Responds with the user object from the username", () => {
+      return request(app)
+        .get("/api/user/FoxyRoxy")
+        .expect(200)
+        .then(({ body }) => {
+          const user = body;
+          expect(user.displayName).to.deep.equal("Roxy Chisley");
+          expect(Object.keys(user)).to.have.lengthOf(6);
+        });
+    });
+  });
+
   describe("PATCH - user by ID", () => {
     it("Status: 200. Responds with the updated user object from the id", () => {
       const update = { displayName: "Martha White" };

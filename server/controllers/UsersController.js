@@ -67,3 +67,10 @@ exports.getAllUsers = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getUserByUsername = (req, res, next) => {
+  const { username } = req.params;
+  UsersModel.find({ username: username }).then((user) => {
+    res.status(200).json(user[0]);
+  });
+};

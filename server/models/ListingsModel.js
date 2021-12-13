@@ -16,15 +16,12 @@ const AmenitiesSchema = new Schema(
   { _id: false }
 );
 
-const ReviewsSchema = new Schema(
-  {
-    username: String,
-    ownerRating: Number,
-    SpaceRating: Number,
-    Body: String,
-  },
-  { _id: false }
-);
+const ReviewsSchema = new Schema({
+  username: String,
+  ownerRating: Number,
+  SpaceRating: Number,
+  Body: String,
+});
 
 const ContactDetailsSchema = new Schema(
   {
