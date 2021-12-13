@@ -48,7 +48,7 @@ const ListingSchema = new Schema(
     location: LocationSchema,
     owner: String,
     price: Number,
-    spaceRating: Double,
+    spaceRating: Number,
     size: String,
     description: String,
     amenities: AmenitiesSchema,
