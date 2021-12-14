@@ -36,7 +36,7 @@ describe("/api/listings", () => {
           const { listings } = body;
           expect(listings).to.be.an("array");
           listings.forEach((listingObj) => {
-            expect(Object.keys(listingObj)).to.have.lengthOf(12);
+            expect(Object.keys(listingObj)).to.have.lengthOf(13);
             expect(listingObj).to.have.all.keys(
               "_id",
               "title",
@@ -280,49 +280,53 @@ describe("/api/listings", () => {
 
 describe("/api/listings/:listing_id", () => {
   describe("GET LISTING BY ID", () => {
-    it("Status: 200. Responds with a listing object with the relevant properties", () => {
-      return request(app)
-        .get("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-        .expect(200)
-        .then(({ body }) => {
-          let listing = body;
-          expect(listing).to.be.an("object");
-          expect(Object.keys(listing)).to.have.lengthOf(12);
-          expect(listing).to.have.all.keys(
-            "_id",
-            "title",
-            "location",
-            "owner",
-            "price",
-            "spaceRating",
-            "size",
-            "description",
-            "amenities",
-            "reviews",
-            "contactDetails",
-            "images"
-          );
-          expect(listing.location).to.be.an("object");
-          expect(listing.location).to.deep.nested.keys("city", "postcode");
-          expect(listing.amenities).to.be.an("object");
-          expect(listing.amenities).to.deep.nested.keys(
-            "power",
-            "accessible",
-            "parking",
-            "indoor",
-            "outdoor",
-            "WC",
-            "kitchen",
-            "_24HourAccess"
-          );
-          expect(listing.contactDetails).to.be.an("object");
-          expect(listing.contactDetails).to.deep.nested.keys(
-            "phoneNumber",
-            "emailAddress"
-          );
-          expect(listing.reviews).to.be.an("array");
-          expect(listing.images).to.be.an("array");
-        });
+    it.only("Status: 200. Responds with a listing object with the relevant properties", () => {
+      return (
+        request(app)
+          //
+          .get("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+          .expect(200)
+          .then(({ body }) => {
+            let listing = body;
+            console.log(listing);
+            expect(listing).to.be.an("object");
+            expect(Object.keys(listing)).to.have.lengthOf(12);
+            expect(listing).to.have.all.keys(
+              "_id",
+              "title",
+              "location",
+              "owner",
+              "price",
+              "spaceRating",
+              "size",
+              "description",
+              "amenities",
+              "reviews",
+              "contactDetails",
+              "images"
+            );
+            expect(listing.location).to.be.an("object");
+            expect(listing.location).to.deep.nested.keys("city", "postcode");
+            expect(listing.amenities).to.be.an("object");
+            expect(listing.amenities).to.deep.nested.keys(
+              "power",
+              "accessible",
+              "parking",
+              "indoor",
+              "outdoor",
+              "WC",
+              "kitchen",
+              "_24HourAccess"
+            );
+            expect(listing.contactDetails).to.be.an("object");
+            expect(listing.contactDetails).to.deep.nested.keys(
+              "phoneNumber",
+              "emailAddress"
+            );
+            expect(listing.reviews).to.be.an("array");
+            expect(listing.images).to.be.an("array");
+          })
+      );
     });
     it("Status: 404. Responds with an error message when the path is logical (hexidecimal) but does not exist", () => {
       return request(app)
@@ -371,6 +375,43 @@ describe("/api/listings/:listing_id", () => {
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).to.deep.equal("Invalid data entry.");
+        });
+    });
+  });
+
+  describe("GET LISTINGS BOOKED DAYS", () => {
+    it.only("Status: 200. Gets an array of booked day objects for a single listing", () => {
+      return request(app)
+        .get("/api/listings/61b8801c8cc87e964d8ca2cd")
+        .expect(200)
+        .then(({ body }) => {
+          console.log(body);
+          expect(body.bookedDays).to.deep.equal({
+            "2021-12-10": {
+              disabled: true,
+              startingDay: true,
+              color: "grey",
+              endingDay: true,
+            },
+            "2021-12-02": {
+              disabled: true,
+              startingDay: true,
+              color: "grey",
+              endingDay: true,
+            },
+            "2021-12-21": {
+              disabled: true,
+              startingDay: true,
+              color: "grey",
+              endingDay: true,
+            },
+            "2021-12-23": {
+              disabled: true,
+              startingDay: true,
+              color: "grey",
+              endingDay: true,
+            },
+          });
         });
     });
   });

@@ -51,6 +51,7 @@ const ListingSchema = new Schema(
     amenities: AmenitiesSchema,
     reviews: [ReviewsSchema],
     contactDetails: ContactDetailsSchema,
+    bookedDays: Array,
     images: Array,
   },
   {

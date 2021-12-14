@@ -28,6 +28,7 @@ const testListings = [
     description:
       "A beautiful open space to absorb the Warrington nature. Ideal for sports activities and large-scale events but own power supply and equipment would be needed.",
     reviews: [],
+    bookedDays: [],
     images: [],
   },
   {
@@ -55,6 +56,7 @@ const testListings = [
     description:
       "A quaint but useful function room in our family pub. It comes with a private bar and access to the pub's beer garden! Food can be ordered from the bar during working hours. Lovely rustic decor and hairs and tables can be provided on request.",
     reviews: [],
+    bookedDays: [],
     images: [],
   },
   {
@@ -82,6 +84,7 @@ const testListings = [
     description:
       "A decent sized garage with room for band equipment, painting gear, photoshoot set-ups and much more! Unfortunately there's no access to a toilet but a bucket can be provided on request (extra £5).",
     reviews: [],
+    bookedDays: [],
     images: [],
   },
   {
@@ -109,6 +112,7 @@ const testListings = [
     description:
       "My garden is my pride and joy! I have spent many years getting it to flourish to the wonderful standard it is now. In fact, my neighbours are all so jealous! Now, you can come and enjoy my lovely space (as long as you keep off the grass haha!). I've even got a small pong that's full of frogs! Ideal for nature photography and quiet painting.",
     reviews: [],
+    bookedDays: [],
     images: [],
   },
   {
@@ -136,6 +140,7 @@ const testListings = [
     description:
       "Large function room in a luxurious, privately owned hotel. Brilliant location right in the heart of Manchester. Accommodating for a variety of events. Contact us to discuss.",
     reviews: [],
+    bookedDays: [],
     images: [],
   },
   {
@@ -163,6 +168,7 @@ const testListings = [
     description:
       "A soundproof room in the basement of a well-known gig venue in Manchester. Ideal for band practice.",
     reviews: [],
+    bookedDays: [],
     images: [],
   },
   {
@@ -190,6 +196,7 @@ const testListings = [
     description:
       "Looking for a classy rooftop bar for your fancy event? Well, look no further! We've got a state-of-the-art indoor bar that looks out on our well-decorated outdoor area. Under heaters and lounging on luxury furniture, you can take in the views of the city both day and night. Not to mention our eclectic mix of drink and food offers, all prepared by our wonderful waiting staff. We are here to make your event, the event of the year!",
     reviews: [],
+    bookedDays: [],
     images: [],
   },
 ];

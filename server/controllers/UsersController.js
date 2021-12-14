@@ -18,7 +18,7 @@ exports.postUser = (req, res, next) => {
     emailAddress: req.body.emailAddress,
     userRating: 0,
     _id: req.body._id,
-    avatar: req.body.avatar,
+    avatar: "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png",
   });
 
   user

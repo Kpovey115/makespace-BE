@@ -23,6 +23,7 @@ exports.getListingById = (req, res, next) => {
   const id = req.params.listing_id;
   ListingModel.findById(id)
     .then((listing) => {
+      console.log(listing);
       if (listing === null) res.status(404).json({ msg: "Listing not found." });
       else res.status(200).json(listing);
     })
@@ -56,7 +57,7 @@ exports.postListing = (req, res, next) => {
       phoneNumber: req.body.contactDetails.phoneNumber,
       emailAddress: req.body.contactDetails.emailAddress,
     },
-    images: req.body.images,
+    images: ["https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"],
   });
 
   listing
