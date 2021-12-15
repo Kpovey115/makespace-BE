@@ -68,7 +68,9 @@ exports.postListing = (req, res, next) => {
       phoneNumber: req.body.contactDetails.phoneNumber,
       emailAddress: req.body.contactDetails.emailAddress,
     },
-    images: ["https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"],
+    images: [
+      "https://www.t-and-b.co.uk/wp-content/uploads/2017/01/default-placeholder.png",
+    ],
   });
 
   listing
