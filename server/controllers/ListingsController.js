@@ -9,9 +9,9 @@ exports.getListings = (req, res, next) => {
 
   const temp = Number(query.price);
 
-  if (temp === NaN) {
-    return Promise.reject(res.status(400).send({ msg: "Invalid data entry." }));
-  }
+  // if (temp === NaN) {
+  //   return Promise.reject(res.status(400).send({ msg: "Invalid data entry." }));
+  // }
 
   query.price = { $lte: temp };
 
