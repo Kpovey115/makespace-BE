@@ -117,7 +117,7 @@ describe("/api/listings", () => {
           });
         });
     });
-    it.only("Status: 200. Responds with an array of objects filtered by a lower than price", () => {
+    it("Status: 200. Responds with an array of objects filtered by a lower than price", () => {
       return request(app)
         .get("/api/listings?price=120")
         .expect(200)
