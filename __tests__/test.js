@@ -49,6 +49,7 @@ describe("/api/listings", () => {
               "amenities",
               "reviews",
               "contactDetails",
+              "bookedDays",
               "images"
             );
             expect(listingObj.location).to.be.an("object");
@@ -83,7 +84,7 @@ describe("/api/listings", () => {
           expect(listings).to.be.an("array");
           expect(listings).to.have.lengthOf(3);
           listings.forEach((listingObj) => {
-            expect(Object.keys(listingObj)).to.have.lengthOf(12);
+            expect(Object.keys(listingObj)).to.have.lengthOf(13);
             expect(listingObj.size).to.deep.equal(`M`);
           });
         });
@@ -97,7 +98,7 @@ describe("/api/listings", () => {
           expect(listings).to.be.an("array");
           expect(listings).to.have.lengthOf(4);
           listings.forEach((listingObj) => {
-            expect(Object.keys(listingObj)).to.have.lengthOf(12);
+            expect(Object.keys(listingObj)).to.have.lengthOf(13);
             expect(listingObj.location.city).to.deep.equal(`Manchester`);
           });
         });
@@ -111,7 +112,7 @@ describe("/api/listings", () => {
           expect(listings).to.be.an("array");
           expect(listings).to.have.lengthOf(3);
           listings.forEach((listingObj) => {
-            expect(Object.keys(listingObj)).to.have.lengthOf(12);
+            expect(Object.keys(listingObj)).to.have.lengthOf(13);
             expect(listingObj.location.city).to.deep.equal(`Manchester`);
             expect(listingObj.amenities.kitchen).to.deep.equal(false);
           });
@@ -124,7 +125,7 @@ describe("/api/listings", () => {
         .then(({ body }) => {
           const { listings } = body;
           expect(listings).to.be.an("array");
-          expect(listings).to.have.lengthOf(4);
+          expect(listings).to.have.lengthOf(5);
         });
     });
 
@@ -165,7 +166,7 @@ describe("/api/listings", () => {
           expect(listings).to.be.sortedBy(`title`);
           expect(listings).to.have.lengthOf(4);
           listings.forEach((listingObj) => {
-            expect(Object.keys(listingObj)).to.have.lengthOf(12);
+            expect(Object.keys(listingObj)).to.have.lengthOf(13);
             expect(listingObj.location.city).to.deep.equal(`Manchester`);
           });
         });
@@ -194,6 +195,7 @@ describe("/api/listings", () => {
             emailAddress: "hollymay@gmail.com",
           },
           description: "This is a small room.",
+          bookedDays: [],
           images: ["i am an image"],
         };
         return request(app)
@@ -203,7 +205,7 @@ describe("/api/listings", () => {
           .then(({ body }) => {
             const listing = body;
             expect(listing).to.be.an("object");
-            expect(Object.keys(listing)).to.have.lengthOf(12);
+            expect(Object.keys(listing)).to.have.lengthOf(13);
             expect(listing.title).to.deep.equal("Little space");
             expect(listing.location.city).to.deep.equal("Liverpool");
             expect(listing.contactDetails.emailAddress).to.deep.equal(
@@ -237,6 +239,7 @@ describe("/api/listings", () => {
             emailAddress: "Scarlett@gmail.com",
           },
           owner: "ScarlettAdams",
+          bookedDays: [],
           images: [],
         };
         return request(app)
@@ -246,7 +249,7 @@ describe("/api/listings", () => {
           .then(({ body }) => {
             const listing = body;
             expect(listing).to.be.an("object");
-            expect(Object.keys(listing)).to.have.lengthOf(12);
+            expect(Object.keys(listing)).to.have.lengthOf(13);
             expect(listing.title).to.deep.equal("Floating-Lemon");
             expect(listing.location.city).to.deep.equal("Manchester");
             expect(listing.contactDetails.emailAddress).to.deep.equal(
@@ -298,9 +301,9 @@ describe("/api/listings/:listing_id", () => {
           .expect(200)
           .then(({ body }) => {
             let listing = body;
-            console.log(listing);
+
             expect(listing).to.be.an("object");
-            expect(Object.keys(listing)).to.have.lengthOf(12);
+            expect(Object.keys(listing)).to.have.lengthOf(13);
             expect(listing).to.have.all.keys(
               "_id",
               "title",
@@ -313,6 +316,7 @@ describe("/api/listings/:listing_id", () => {
               "amenities",
               "reviews",
               "contactDetails",
+              "bookedDays",
               "images"
             );
             expect(listing.location).to.be.an("object");
@@ -385,43 +389,6 @@ describe("/api/listings/:listing_id", () => {
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).to.deep.equal("Invalid data entry.");
-        });
-    });
-  });
-
-  describe("GET LISTINGS BOOKED DAYS", () => {
-    it("Status: 200. Gets an array of booked day objects for a single listing", () => {
-      return request(app)
-        .get("/api/listings/61b8801c8cc87e964d8ca2cd")
-        .expect(200)
-        .then(({ body }) => {
-          console.log(body);
-          expect(body.bookedDays).to.deep.equal({
-            "2021-12-10": {
-              disabled: true,
-              startingDay: true,
-              color: "grey",
-              endingDay: true,
-            },
-            "2021-12-02": {
-              disabled: true,
-              startingDay: true,
-              color: "grey",
-              endingDay: true,
-            },
-            "2021-12-21": {
-              disabled: true,
-              startingDay: true,
-              color: "grey",
-              endingDay: true,
-            },
-            "2021-12-23": {
-              disabled: true,
-              startingDay: true,
-              color: "grey",
-              endingDay: true,
-            },
-          });
         });
     });
   });
@@ -587,7 +554,7 @@ describe("/api/users/:user_id", () => {
           expect(listings).to.be.an("array");
           expect(listings.length).to.deep.equal(1);
           listings.forEach((listingObj) => {
-            expect(Object.keys(listingObj)).to.have.lengthOf(12);
+            expect(Object.keys(listingObj)).to.have.lengthOf(13);
             expect(listingObj).to.have.all.keys(
               "_id",
               "title",
@@ -600,6 +567,7 @@ describe("/api/users/:user_id", () => {
               "amenities",
               "reviews",
               "contactDetails",
+              "bookedDays",
               "images"
             );
             expect(listingObj.location).to.be.an("object");

@@ -7,13 +7,17 @@ exports.getListings = (req, res, next) => {
   if (!query.order) order = "desc";
   else order = query.order;
 
-  // const temp = Number(query.price);
+  if (query.price !== undefined) {
+    const temp = Number(query.price);
 
-  // // if (temp === NaN) {
-  // //   return Promise.reject(res.status(400).send({ msg: "Invalid data entry." }));
-  // // }
+    if (temp === NaN) {
+      return Promise.reject(
+        res.status(400).send({ msg: "Invalid data entry." })
+      );
+    }
 
-  // query.price = { $lte: temp };
+    query.price = { $lte: temp };
+  }
 
   ListingModel.find(query)
     .sort({ [sortby]: order })
@@ -31,7 +35,6 @@ exports.getListingById = (req, res, next) => {
   const id = req.params.listing_id;
   ListingModel.findById(id)
     .then((listing) => {
-      console.log(listing);
       if (listing === null) res.status(404).json({ msg: "Listing not found." });
       else res.status(200).json(listing);
     })
