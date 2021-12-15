@@ -7,6 +7,14 @@ exports.getListings = (req, res, next) => {
   if (!query.order) order = "desc";
   else order = query.order;
 
+  const temp = Number(query.price);
+
+  if (temp === NaN) {
+    return Promise.reject(res.status(400).send({ msg: "Invalid data entry." }));
+  }
+
+  query.price = { $lte: temp };
+
   ListingModel.find(query)
     .sort({ [sortby]: order })
     .then((listings) => {

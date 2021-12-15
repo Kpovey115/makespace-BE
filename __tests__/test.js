@@ -117,6 +117,16 @@ describe("/api/listings", () => {
           });
         });
     });
+    it.only("Status: 200. Responds with an array of objects filtered by a lower than price", () => {
+      return request(app)
+        .get("/api/listings?price=120")
+        .expect(200)
+        .then(({ body }) => {
+          const { listings } = body;
+          expect(listings).to.be.an("array");
+          expect(listings).to.have.lengthOf(4);
+        });
+    });
 
     it("Status: 200, Responds with listings sorted by descending space rating by default", () => {
       return request(app)
@@ -280,7 +290,7 @@ describe("/api/listings", () => {
 
 describe("/api/listings/:listing_id", () => {
   describe("GET LISTING BY ID", () => {
-    it.only("Status: 200. Responds with a listing object with the relevant properties", () => {
+    it("Status: 200. Responds with a listing object with the relevant properties", () => {
       return (
         request(app)
           //
@@ -380,7 +390,7 @@ describe("/api/listings/:listing_id", () => {
   });
 
   describe("GET LISTINGS BOOKED DAYS", () => {
-    it.only("Status: 200. Gets an array of booked day objects for a single listing", () => {
+    it("Status: 200. Gets an array of booked day objects for a single listing", () => {
       return request(app)
         .get("/api/listings/61b8801c8cc87e964d8ca2cd")
         .expect(200)
