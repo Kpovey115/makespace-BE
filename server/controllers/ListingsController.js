@@ -68,9 +68,7 @@ exports.postListing = (req, res, next) => {
       phoneNumber: req.body.contactDetails.phoneNumber,
       emailAddress: req.body.contactDetails.emailAddress,
     },
-    images: [
-      "https://www.t-and-b.co.uk/wp-content/uploads/2017/01/default-placeholder.png",
-    ],
+    images: [req.body.images],
   });
 
   listing
