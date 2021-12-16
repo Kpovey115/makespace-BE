@@ -50,7 +50,7 @@ exports.postListing = (req, res, next) => {
     },
     owner: req.body.owner,
     price: req.body.price,
-    spaceRating: 0.1,
+    spaceRating: 0,
     size: req.body.size,
     description: req.body.description,
     amenities: {
