@@ -294,53 +294,50 @@ describe("/api/listings", () => {
 describe("/api/listings/:listing_id", () => {
   describe("GET LISTING BY ID", () => {
     it("Status: 200. Responds with a listing object with the relevant properties", () => {
-      return (
-        request(app)
-          //
-          .get("/api/listings/61adfad4bacbe7ff1dfb7f2a")
-          .expect(200)
-          .then(({ body }) => {
-            let listing = body;
+      return request(app)
+        .get("/api/listings/61adfad4bacbe7ff1dfb7f2a")
+        .expect(200)
+        .then(({ body }) => {
+          let listing = body;
 
-            expect(listing).to.be.an("object");
-            expect(Object.keys(listing)).to.have.lengthOf(13);
-            expect(listing).to.have.all.keys(
-              "_id",
-              "title",
-              "location",
-              "owner",
-              "price",
-              "spaceRating",
-              "size",
-              "description",
-              "amenities",
-              "reviews",
-              "contactDetails",
-              "bookedDays",
-              "images"
-            );
-            expect(listing.location).to.be.an("object");
-            expect(listing.location).to.deep.nested.keys("city", "postcode");
-            expect(listing.amenities).to.be.an("object");
-            expect(listing.amenities).to.deep.nested.keys(
-              "power",
-              "accessible",
-              "parking",
-              "indoor",
-              "outdoor",
-              "WC",
-              "kitchen",
-              "_24HourAccess"
-            );
-            expect(listing.contactDetails).to.be.an("object");
-            expect(listing.contactDetails).to.deep.nested.keys(
-              "phoneNumber",
-              "emailAddress"
-            );
-            expect(listing.reviews).to.be.an("array");
-            expect(listing.images).to.be.an("array");
-          })
-      );
+          expect(listing).to.be.an("object");
+          expect(Object.keys(listing)).to.have.lengthOf(13);
+          expect(listing).to.have.all.keys(
+            "_id",
+            "title",
+            "location",
+            "owner",
+            "price",
+            "spaceRating",
+            "size",
+            "description",
+            "amenities",
+            "reviews",
+            "contactDetails",
+            "bookedDays",
+            "images"
+          );
+          expect(listing.location).to.be.an("object");
+          expect(listing.location).to.deep.nested.keys("city", "postcode");
+          expect(listing.amenities).to.be.an("object");
+          expect(listing.amenities).to.deep.nested.keys(
+            "power",
+            "accessible",
+            "parking",
+            "indoor",
+            "outdoor",
+            "WC",
+            "kitchen",
+            "_24HourAccess"
+          );
+          expect(listing.contactDetails).to.be.an("object");
+          expect(listing.contactDetails).to.deep.nested.keys(
+            "phoneNumber",
+            "emailAddress"
+          );
+          expect(listing.reviews).to.be.an("array");
+          expect(listing.images).to.be.an("array");
+        });
     });
     it("Status: 404. Responds with an error message when the path is logical (hexidecimal) but does not exist", () => {
       return request(app)
